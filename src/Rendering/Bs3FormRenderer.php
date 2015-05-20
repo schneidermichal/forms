@@ -29,7 +29,9 @@ class Bs3FormRenderer extends DefaultFormRenderer
 
 	/** @var bool */
 	private $controlsInit = FALSE;
-
+	
+	/** @var bool */
+	private $displayLabels = TRUE;
 
 	public function __construct()
 	{
@@ -40,6 +42,12 @@ class Bs3FormRenderer extends DefaultFormRenderer
 		$this->wrappers['label']['container'] = 'div class="col-sm-3 control-label"';
 		$this->wrappers['control']['description'] = 'span class=help-block';
 		$this->wrappers['control']['errorcontainer'] = 'span class=help-block';
+	}
+	
+	
+	public function displayLabels($displayLabels)
+	{
+		$this->displayLabels = $displayLabels;
 	}
 
 
@@ -87,8 +95,12 @@ class Bs3FormRenderer extends DefaultFormRenderer
 
 	public function renderLabel(Nette\Forms\IControl $control)
 	{
-		$this->controlsInit();
-		return parent::renderLabel($control);
+		if ($this->displayLabels) {
+			$this->controlsInit();
+			return parent::renderLabel($control);
+		} else {
+			return Html::el();
+		}
 	}
 
 
