@@ -32,14 +32,29 @@ class Bs3FormRenderer extends DefaultFormRenderer
 	
 	/** @var bool */
 	private $displayLabels = TRUE;
+	
+	/** @var int */
+        private $labelSize = 3;
+        
+        /** @var string */
+        private $controlContainer = 'div class=col-sm-%d';
+        
+        /** @var string */
+        private $labelContainer = 'div class="col-sm-%d control-label"';
 
 	public function __construct()
+	{
+		$this->setUpContainers();
+	}
+	
+	
+	private function setUpContainers()
 	{
 		$this->wrappers['controls']['container'] = NULL;
 		$this->wrappers['pair']['container'] = 'div class=form-group';
 		$this->wrappers['pair']['.error'] = 'has-error';
-		$this->wrappers['control']['container'] = 'div class=col-sm-9';
-		$this->wrappers['label']['container'] = 'div class="col-sm-3 control-label"';
+		$this->wrappers['control']['container'] = sprintf($this->controlContainer, 12 - $this->labelSize);
+		$this->wrappers['label']['container'] = sprintf($this->labelContainer, $this->labelSize);
 		$this->wrappers['control']['description'] = 'span class=help-block';
 		$this->wrappers['control']['errorcontainer'] = 'span class=help-block';
 	}
@@ -48,6 +63,13 @@ class Bs3FormRenderer extends DefaultFormRenderer
 	public function displayLabels($displayLabels)
 	{
 		$this->displayLabels = $displayLabels;
+	}
+	
+	
+	public function setLabelSize($labelSize)
+	{
+		$this->labelSize = $labelSize;
+		$this->setUpContainers();
 	}
 
 
